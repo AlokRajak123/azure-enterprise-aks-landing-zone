@@ -13,7 +13,7 @@
     },
 
     "allowedSshIp":{
-      "value":"YOUR_PUBLIC_IP/32"
+      "value":"49.207.153.216/32"
     }
 
   }
