@@ -1,0 +1,26 @@
+trigger:
+- main
+
+pool:
+  vmImage: ubuntu-latest
+
+variables:
+- group: AKS-Lab
+
+steps:
+
+- task: AzureCLI@2
+  inputs:
+    azureSubscription: Azure-PAYG
+    scriptType: bash
+    scriptLocation: inlineScript
+    inlineScript: |
+
+      az bicep install
+
+      az deployment group create \
+      --resource-group $(resourceGroup) \
+      --template-file bicep/main.bicep \
+      --parameters \
+      location=$(location) \
+      clusterName=$(clusterName)
