@@ -13,41 +13,34 @@ steps:
 
 - task: AzureCLI@2
   displayName: Install Bicep
-
   inputs:
-    azureSubscription: Azure-PAYG
+    azureSubscription: Azure-PAYG-ServiceConnection
     scriptType: bash
     scriptLocation: inlineScript
     inlineScript: |
-
       az bicep install
-
       az bicep version
 
 - task: AzureCLI@2
   displayName: Validate Bicep
-
   inputs:
-    azureSubscription: Azure-PAYG
+    azureSubscription: Azure-PAYG-ServiceConnection
     scriptType: bash
     scriptLocation: inlineScript
     inlineScript: |
-
       az deployment group validate \
-      --resource-group $(resourceGroup) \
-      --template-file bicep/main.bicep \
-      --parameters @parameters/dev.parameters.json
+        --resource-group $(resourceGroup) \
+        --template-file bicep/main.bicep \
+        --parameters @parameters/dev.parameters.json
 
 - task: AzureCLI@2
   displayName: Deploy AKS
-
   inputs:
-    azureSubscription: Azure-PAYG
+    azureSubscription: Azure-PAYG-ServiceConnection
     scriptType: bash
     scriptLocation: inlineScript
     inlineScript: |
-
       az deployment group create \
-      --resource-group $(resourceGroup) \
-      --template-file bicep/main.bicep \
-      --parameters @parameters/dev.parameters.json
+        --resource-group $(resourceGroup) \
+        --template-file bicep/main.bicep \
+        --parameters @parameters/dev.parameters.json
