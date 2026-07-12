@@ -1,7 +1,12 @@
 targetScope = 'resourceGroup'
 
+@description('Azure Region')
 param location string = resourceGroup().location
+
+@description('AKS Cluster Name')
 param clusterName string
+
+// Infrastructure Modules
 
 module network './network.bicep' = {
   name: 'network'
@@ -24,13 +29,4 @@ module acr './acr.bicep' = {
   }
 }
 
-module aks './aks.bicep' = {
-  name: 'aks'
-  params: {
-    location: location
-    clusterName: clusterName
-    subnetId: network.outputs.subnetId
-    workspaceId: loganalytics.outputs.workspaceId
-    acrId: acr.outputs.acrId
-  }
-}
+// AKS and JumpBox will be added in Part-2

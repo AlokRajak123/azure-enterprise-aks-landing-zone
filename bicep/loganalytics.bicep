@@ -1,8 +1,11 @@
 param location string
+
 param workspaceName string = 'law-${uniqueString(resourceGroup().id)}'
 
-resource law 'Microsoft.OperationalInsights/workspaces@2023-09-01' = {
+resource workspace 'Microsoft.OperationalInsights/workspaces@2023-09-01' = {
+
   name: workspaceName
+
   location: location
 
   sku: {
@@ -10,6 +13,9 @@ resource law 'Microsoft.OperationalInsights/workspaces@2023-09-01' = {
   }
 
   properties: {}
+
 }
 
-output workspaceId string = law.id
+output workspaceId string = workspace.id
+
+output workspaceName string = workspace.name
