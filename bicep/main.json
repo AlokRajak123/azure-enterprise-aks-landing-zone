@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.45.6.27763",
-      "templateHash": "15174618995998748973"
+      "templateHash": "4222407734444013109"
     }
   },
   "parameters": {
@@ -14,12 +14,6 @@
       "defaultValue": "[resourceGroup().location]",
       "metadata": {
         "description": "Azure Region"
-      }
-    },
-    "clusterName": {
-      "type": "string",
-      "metadata": {
-        "description": "AKS Cluster Name"
       }
     }
   },
@@ -139,7 +133,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.45.6.27763",
-              "templateHash": "18241018883941837625"
+              "templateHash": "17584961316055978666"
             }
           },
           "parameters": {
@@ -148,19 +142,24 @@
             },
             "workspaceName": {
               "type": "string",
-              "defaultValue": "[format('law-{0}', uniqueString(resourceGroup().id))]"
+              "defaultValue": "[format('law-{0}', uniqueString(resourceGroup().id))]",
+              "metadata": {
+                "description": "Log Analytics Workspace Name"
+              }
             }
           },
           "resources": [
             {
               "type": "Microsoft.OperationalInsights/workspaces",
-              "apiVersion": "2023-09-01",
+              "apiVersion": "2022-10-01",
               "name": "[parameters('workspaceName')]",
               "location": "[parameters('location')]",
               "sku": {
                 "name": "PerGB2018"
               },
-              "properties": {}
+              "properties": {
+                "retentionInDays": 30
+              }
             }
           ],
           "outputs": {

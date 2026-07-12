@@ -3,6 +3,8 @@ targetScope = 'resourceGroup'
 @description('Azure Region')
 param location string = resourceGroup().location
 
+param clusterName string
+
 // Infrastructure Modules
 
 module network './network.bicep' = {
