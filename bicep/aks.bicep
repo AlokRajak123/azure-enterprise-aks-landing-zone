@@ -23,7 +23,7 @@ resource aks 'Microsoft.ContainerService/managedClusters@2024-05-01' = {
   }
 
   sku: {
-    name: 'Basic'
+    name: 'Base'
     tier: 'Free'
   }
 
