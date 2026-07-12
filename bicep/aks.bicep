@@ -1,21 +1,25 @@
+@description('Azure Region')
 param location string
 
+@description('AKS Cluster Name')
 param clusterName string
 
+@description('AKS Subnet Resource ID')
 param subnetId string
 
+@description('Log Analytics Workspace Resource ID')
 param workspaceId string
 
-param acrId string
+@description('Azure Container Registry Resource ID')
 
+@description('Number of AKS Nodes')
 param nodeCount int = 1
 
+@description('AKS Node VM Size')
 param vmSize string = 'Standard_B2s'
 
 resource aks 'Microsoft.ContainerService/managedClusters@2024-05-01' = {
-
   name: clusterName
-
   location: location
 
   identity: {
@@ -28,6 +32,8 @@ resource aks 'Microsoft.ContainerService/managedClusters@2024-05-01' = {
   }
 
   properties: {
+
+    kubernetesVersion: ''
 
     dnsPrefix: clusterName
 
@@ -42,6 +48,9 @@ resource aks 'Microsoft.ContainerService/managedClusters@2024-05-01' = {
       networkPluginMode: 'overlay'
       loadBalancerSku: 'standard'
       outboundType: 'loadBalancer'
+
+      serviceCidr: '172.16.0.0/16'
+      dnsServiceIP: '172.16.0.10'
     }
 
     addonProfiles: {
@@ -56,15 +65,11 @@ resource aks 'Microsoft.ContainerService/managedClusters@2024-05-01' = {
     agentPoolProfiles: [
       {
         name: 'system'
-
         mode: 'System'
-
         count: nodeCount
-
         vmSize: vmSize
 
         osType: 'Linux'
-
         osDiskSizeGB: 30
 
         type: 'VirtualMachineScaleSets'
