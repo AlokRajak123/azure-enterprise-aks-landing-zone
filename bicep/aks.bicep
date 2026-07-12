@@ -10,8 +10,6 @@ param subnetId string
 @description('Log Analytics Workspace Resource ID')
 param workspaceId string
 
-@description('Azure Container Registry Resource ID')
-
 @description('Number of AKS Nodes')
 param nodeCount int = 1
 

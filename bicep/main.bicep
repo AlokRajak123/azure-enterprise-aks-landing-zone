@@ -52,6 +52,5 @@ module aks './aks.bicep' = {
     clusterName:clusterName
     subnetId:network.outputs.aksSubnetId
     workspaceId:loganalytics.outputs.workspaceId
-    acrId:acr.outputs.acrId
-  }
+      }
 }

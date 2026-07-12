@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.45.6.27763",
-      "templateHash": "10366348819023460522"
+      "templateHash": "5773337983260182528"
     }
   },
   "parameters": {
@@ -432,9 +432,6 @@
           },
           "workspaceId": {
             "value": "[reference(resourceId('Microsoft.Resources/deployments', 'loganalytics'), '2025-04-01').outputs.workspaceId.value]"
-          },
-          "acrId": {
-            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'acr'), '2025-04-01').outputs.acrId.value]"
           }
         },
         "template": {
@@ -444,32 +441,47 @@
             "_generator": {
               "name": "bicep",
               "version": "0.45.6.27763",
-              "templateHash": "7256146140222731432"
+              "templateHash": "15982899970761271082"
             }
           },
           "parameters": {
             "location": {
-              "type": "string"
+              "type": "string",
+              "metadata": {
+                "description": "Azure Region"
+              }
             },
             "clusterName": {
-              "type": "string"
+              "type": "string",
+              "metadata": {
+                "description": "AKS Cluster Name"
+              }
             },
             "subnetId": {
-              "type": "string"
+              "type": "string",
+              "metadata": {
+                "description": "AKS Subnet Resource ID"
+              }
             },
             "workspaceId": {
-              "type": "string"
-            },
-            "acrId": {
-              "type": "string"
+              "type": "string",
+              "metadata": {
+                "description": "Log Analytics Workspace Resource ID"
+              }
             },
             "nodeCount": {
               "type": "int",
-              "defaultValue": 1
+              "defaultValue": 1,
+              "metadata": {
+                "description": "Number of AKS Nodes"
+              }
             },
             "vmSize": {
               "type": "string",
-              "defaultValue": "Standard_B2s"
+              "defaultValue": "Standard_B2s",
+              "metadata": {
+                "description": "AKS Node VM Size"
+              }
             }
           },
           "resources": [
@@ -482,10 +494,11 @@
                 "type": "SystemAssigned"
               },
               "sku": {
-                "name": "Basic",
+                "name": "Base",
                 "tier": "Free"
               },
               "properties": {
+                "kubernetesVersion": "",
                 "dnsPrefix": "[parameters('clusterName')]",
                 "enableRBAC": true,
                 "apiServerAccessProfile": {
@@ -495,7 +508,9 @@
                   "networkPlugin": "azure",
                   "networkPluginMode": "overlay",
                   "loadBalancerSku": "standard",
-                  "outboundType": "loadBalancer"
+                  "outboundType": "loadBalancer",
+                  "serviceCidr": "172.16.0.0/16",
+                  "dnsServiceIP": "172.16.0.10"
                 },
                 "addonProfiles": {
                   "omsagent": {
@@ -523,7 +538,6 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Resources/deployments', 'acr')]",
         "[resourceId('Microsoft.Resources/deployments', 'loganalytics')]",
         "[resourceId('Microsoft.Resources/deployments', 'network')]"
       ]
