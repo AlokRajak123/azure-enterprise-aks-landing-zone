@@ -1,14 +1,21 @@
 param location string
-param aksName string
+param clusterName string
 param subnetId string
 param workspaceId string
 
-resource aks 'Microsoft.ContainerService/managedClusters@2024-02-01' = {
-  name: aksName
+resource aks 'Microsoft.ContainerService/managedClusters@2024-05-01' = {
+
+  name: clusterName
+
   location: location
 
   identity: {
     type: 'SystemAssigned'
+  }
+
+  sku: {
+    name: 'Basic'
+    tier: 'Free'
   }
 
   properties: {
@@ -17,37 +24,35 @@ resource aks 'Microsoft.ContainerService/managedClusters@2024-02-01' = {
 
     enableRBAC: true
 
+    apiServerAccessProfile: {
+      enablePrivateCluster: true
+    }
+
     networkProfile: {
       networkPlugin: 'azure'
+      networkPluginMode: 'overlay'
     }
 
     agentPoolProfiles: [
+
       {
-        name: 'system'
+
+        name: 'nodepool1'
 
         count: 1
 
         vmSize: 'Standard_B2s'
 
-        mode: 'System'
-
         osType: 'Linux'
 
+        mode: 'System'
+
         vnetSubnetID: subnetId
+
       }
+
     ]
 
-    addonProfiles: {
-      omsagent: {
-        enabled: true
-        config: {
-          logAnalyticsWorkspaceResourceID: workspaceId
-        }
-      }
-    }
-
-    apiServerAccessProfile: {
-      enablePrivateCluster: true
-    }
   }
+
 }

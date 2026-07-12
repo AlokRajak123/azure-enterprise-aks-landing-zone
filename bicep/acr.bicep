@@ -1,13 +1,17 @@
 param location string
-param acrName string
 
 resource acr 'Microsoft.ContainerRegistry/registries@2023-07-01' = {
-  name: acrName
+
+  name: 'akslabacr12345'
+
   location: location
+
   sku: {
+
     name: 'Basic'
+
   }
-  properties: {
-    adminUserEnabled: false
-  }
+
 }
+
+output acrId string = acr.id

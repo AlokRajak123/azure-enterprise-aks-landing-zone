@@ -1,22 +1,22 @@
 param location string
-param vnetName string
-param aksSubnetName string
 
-resource vnet 'Microsoft.Network/virtualNetworks@2023-05-01' = {
-  name: vnetName
+resource vnet 'Microsoft.Network/virtualNetworks@2024-01-01' = {
+  name: 'vnet-aks'
   location: location
+
   properties: {
     addressSpace: {
       addressPrefixes: [
-        '10.10.0.0/16'
+        '10.0.0.0/16'
       ]
     }
 
     subnets: [
       {
-        name: aksSubnetName
+        name: 'aks-subnet'
+
         properties: {
-          addressPrefix: '10.10.1.0/24'
+          addressPrefix: '10.0.1.0/24'
         }
       }
     ]

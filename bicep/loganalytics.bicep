@@ -1,13 +1,17 @@
 param location string
-param workspaceName string
 
-resource workspace 'Microsoft.OperationalInsights/workspaces@2022-10-01' = {
-  name: workspaceName
+resource law 'Microsoft.OperationalInsights/workspaces@2023-09-01' = {
+
+  name: 'law-akslab'
+
   location: location
+
   properties: {}
+
   sku: {
     name: 'PerGB2018'
   }
+
 }
 
-output workspaceId string = workspace.id
+output workspaceId string = law.id
